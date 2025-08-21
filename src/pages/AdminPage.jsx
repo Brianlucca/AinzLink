@@ -140,25 +140,25 @@ export default function AdminPage() {
             </div>
           ) : (
             <form onSubmit={handleUpdate} className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4">Editando Link</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-400">Editando Link</h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="newOriginalUrl" className="block mb-2 text-sm font-bold">Novo Destino Original</label>
+                  <label htmlFor="newOriginalUrl" className="block mb-2 text-sm font-bold text-gray-400">Novo Destino Original</label>
                   <input
                     id="newOriginalUrl"
                     type="url"
-                    className="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     value={newOriginalUrl}
                     onChange={(e) => setNewOriginalUrl(e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="newPassword" className="block mb-2 text-sm font-bold">Nova Senha</label>
+                  <label htmlFor="newPassword" className="block mb-2 text-sm font-bold text-gray-400">Nova Senha</label>
                   <input
                     id="newPassword"
                     type="text"
-                    className="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="Deixe em branco para remover a senha"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}

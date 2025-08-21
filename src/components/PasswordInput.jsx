@@ -32,14 +32,14 @@ export default function PasswordInput({ shortCode, onSuccess }) {
   return (
     <div className="w-full max-w-md mx-auto">
       <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-        <h2 className="text-2xl font-bold text-center mb-4">Link Protegido</h2>
+        <h2 className="text-2xl text-gray-400 font-bold text-center mb-4">Link Protegido</h2>
         <p className="text-center text-gray-400 mb-6">Este link requer uma senha para continuar.</p>
         <div className="mb-4">
-          <label htmlFor="password" className="block mb-2 text-sm font-bold">Senha</label>
+          <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-400">Senha</label>
           <input
             id="password"
             type="password"
-            className="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

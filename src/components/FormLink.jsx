@@ -35,11 +35,11 @@ const API_URL = import.meta.env.VITE_API_URL;
   return (
     <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-2xl space-y-4 border border-gray-700">
       <div>
-        <label htmlFor="originalUrl" className="block mb-2 text-sm font-bold text-gray-300">URL Original</label>
+        <label htmlFor="originalUrl" className="block mb-2 text-sm font-bold text-gray-400">URL Original</label>
         <input
           id="originalUrl"
           type="url"
-          className="w-full p-3 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+          className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
           placeholder="https://sua-url-super-longa..."
           value={originalUrl}
           onChange={(e) => setOriginalUrl(e.target.value)}
@@ -51,33 +51,33 @@ const API_URL = import.meta.env.VITE_API_URL;
         <summary className="cursor-pointer text-sm font-bold text-gray-400 hover:text-white transition-colors">Opções Avançadas</summary>
         <div className="mt-4 space-y-4">
           <div>
-            <label htmlFor="customCode" className="block mb-2 text-sm font-bold text-gray-300">Nome Personalizado</label>
+            <label htmlFor="customCode" className="block mb-2 text-sm font-bold text-gray-400">Nome Personalizado</label>
             <input
               id="customCode"
               type="text"
-              className="w-full p-3 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              className="w-full p-3 text-gray-300 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
               placeholder="ex: meu-evento"
               value={customCode}
               onChange={(e) => setCustomCode(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-300">Proteger com Senha</label>
+            <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-400">Proteger com Senha</label>
             <input
               id="password"
               type="password"
-              className="w-full p-3 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              className="w-full p-3 text-gray-300 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
               placeholder="Deixe em branco para ser público"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="expiresAt" className="block mb-2 text-sm font-bold text-gray-300">Data de Expiração</label>
+            <label htmlFor="expiresAt" className="block mb-2 text-sm font-bold text-gray-400">Data de Expiração</label>
             <input
               id="expiresAt"
               type="date"
-              className="w-full p-3 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+              className="w-full p-3 text-gray-300 bg-gray-700 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
               value={expiresAt}
               onChange={(e) => setExpiresAt(e.target.value)}
             />
