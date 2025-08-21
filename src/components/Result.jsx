@@ -27,9 +27,9 @@ export default function Result({ shortUrl, adminUrl, error }) {
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg text-center space-y-6 flex flex-col md:flex-row items-center md:text-left">
-      <div className="flex-shrink-0 bg-white p-2 rounded-md">
+      {/* <div className="flex-shrink-0 bg-white p-2 rounded-md">
         <QRCodeSVG value={shortUrl} size={128} />
-      </div>
+      </div> */}
       <div className="md:ml-6 flex-grow">
         <div className="mb-4">
           <h3 className="font-bold text-gray-400">✅ Link Curto (para compartilhar):</h3>
