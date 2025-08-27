@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "source": "/api/:path*",
+      "destination": "https://ainzlink-backend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/:shortCode/verify",
+      "destination": "https://ainzlink-backend.onrender.com/:shortCode/verify"
+    },
+    {
+      "source": "/:shortCode",
+      "destination": "https://ainzlink-backend.onrender.com/:shortCode"
     }
   ]
 }
