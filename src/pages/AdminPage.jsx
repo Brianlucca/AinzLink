@@ -44,14 +44,25 @@ export default function AdminPage() {
     
     fetchInitialStats();
 
-    const socket = io(API_URL);
+    const socket = io(API_URL, {
+      transports: ['websocket']
+    });
+
     socket.on('connect', () => {
+      console.log('Conectado ao servidor WebSocket com ID:', socket.id);
       socket.emit('subscribeToLinkStats', shortCode);
     });
+    
     socket.on('linkStatsUpdate', (update) => {
       setStats(prevStats => ({ ...prevStats, ...update }));
     });
+
+    socket.on('disconnect', () => {
+      console.log('Desconectado do servidor WebSocket.');
+    });
+
     return () => {
+      console.log('Desconectando o socket...');
       socket.disconnect();
     };
   }, [shortCode, token]);
@@ -89,22 +100,32 @@ export default function AdminPage() {
     }
   };
   
-  const renderContent = () => {
-    if (loading) {
-      return <Loading message="Buscando dados do link..." />;
-    }
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center">
+            <div className="w-full max-w-lg">
+                <Loading message="Buscando dados do link..." />
+            </div>
+        </div>
+      </Layout>
+    );
+  }
   
-    if (error && !stats) {
-      return (
+  if (error && !stats) {
+    return (
+      <Layout>
         <div className="w-full max-w-lg mx-auto bg-red-900/50 border border-red-700 text-red-300 p-8 rounded-lg text-center shadow-lg">
           <h2 className="text-3xl font-bold">Acesso Negado</h2>
           <p className="text-xl mt-2">{error}</p>
         </div>
-      );
-    }
+      </Layout>
+    );
+  }
 
-    if (stats) {
-      return (
+  if (stats) {
+    return (
+      <Layout>
         <div className="w-full max-w-2xl mx-auto">
           {successMessage && <div className="mb-4 bg-green-500/20 text-green-300 p-3 rounded-md text-center">{successMessage}</div>}
           {error && <div className="mb-4 bg-red-500/20 text-red-300 p-3 rounded-md text-center">{error}</div>}
@@ -140,8 +161,17 @@ export default function AdminPage() {
             </div>
           ) : (
             <form onSubmit={handleUpdate} className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-gray-400">Editando Link</h2>
+              <h2 className="text-2xl font-bold mb-6 text-center">Editando Link</h2>
               <div className="space-y-4">
+                <div>
+                  <h2 className="text-sm font-bold text-gray-400">Link Curto (Não Editável)</h2>
+                  <input
+                    type="text"
+                    className="w-full p-3 bg-gray-900 text-gray-500 rounded border border-gray-700 cursor-not-allowed"
+                    value={stats.shortUrl}
+                    readOnly
+                  />
+                </div>
                 <div>
                   <label htmlFor="newOriginalUrl" className="block mb-2 text-sm font-bold text-gray-400">Novo Destino Original</label>
                   <input
@@ -174,14 +204,8 @@ export default function AdminPage() {
             </form>
           )}
         </div>
-      );
-    }
-    return null;
-  };
-  
-  return (
-    <Layout>
-      {renderContent()}
-    </Layout>
-  );
+      </Layout>
+    );
+  }
+  return null;
 }
