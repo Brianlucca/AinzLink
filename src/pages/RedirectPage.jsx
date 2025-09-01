@@ -19,7 +19,7 @@ export default function RedirectPage() {
   useEffect(() => {
     const fetchUrl = async () => {
       try {
-        const response = await axios.get(`${API_URL}/${shortCode}?json=true`);
+        const response = await axios.get(`${API_URL}/api/v1/urls/${shortCode}`);
         
         if (response.data.passwordProtected) {
           setStatus('needsPassword');
