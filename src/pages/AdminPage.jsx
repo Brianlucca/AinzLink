@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import Loading from '../components/Loading';
 import Layout from '../components/Layout';
-import { FiLink, FiLock, FiEdit, FiTrash2, FiBarChart2, FiShare2, FiSettings, FiX, FiCheck } from 'react-icons/fi';
+import { FiLink, FiLock, FiEdit, FiTrash2, FiBarChart2, FiShare2, FiX, FiCheck, FiCheckCircle } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
