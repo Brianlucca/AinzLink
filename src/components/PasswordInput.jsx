@@ -15,12 +15,13 @@ export default function PasswordInput({ shortCode, onSuccess }) {
     setError('');
 
     try {
-      const response = await axios.post(`${API_URL}/${shortCode}/verify`, { password });
+      const response = await axios.post(`${API_URL}/api/v1/urls/${shortCode}/verify`, { password });
       if (response.data.originalUrl) {
         onSuccess(response.data.originalUrl);
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao verificar a senha.');
+    } finally {
       setIsLoading(false);
     }
   };
