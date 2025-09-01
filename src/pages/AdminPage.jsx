@@ -6,6 +6,7 @@ import Loading from '../components/Loading';
 import Layout from '../components/Layout';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
 
 export default function AdminPage() {
   const { shortCode } = useParams();
@@ -44,7 +45,7 @@ export default function AdminPage() {
     
     fetchInitialStats();
 
-    const socket = io(API_URL, {
+    const socket = io(WEBSOCKET_URL, {
       transports: ['websocket']
     });
 
