@@ -7,3 +7,7 @@ body {
   background-image: radial-gradient(circle at 1px 1px, #374151 1px, transparent 0);
   background-size: 25px 25px;
 }
+
+input[type="date"] {
+  color-scheme: dark;
+}

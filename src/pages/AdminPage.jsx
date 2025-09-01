@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import Loading from '../components/Loading';
 import Layout from '../components/Layout';
+import { FiLink, FiLock, FiEdit, FiTrash2, FiBarChart2, FiShare2, FiSettings, FiX, FiCheck } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
@@ -45,25 +46,14 @@ export default function AdminPage() {
     
     fetchInitialStats();
 
-    const socket = io(WEBSOCKET_URL, {
-      transports: ['websocket']
-    });
-
+    const socket = io(WEBSOCKET_URL, { transports: ['websocket'] });
     socket.on('connect', () => {
-      console.log('Conectado ao servidor WebSocket com ID:', socket.id);
       socket.emit('subscribeToLinkStats', shortCode);
     });
-    
     socket.on('linkStatsUpdate', (update) => {
       setStats(prevStats => ({ ...prevStats, ...update }));
     });
-
-    socket.on('disconnect', () => {
-      console.log('Desconectado do servidor WebSocket.');
-    });
-
     return () => {
-      console.log('Desconectando o socket...');
       socket.disconnect();
     };
   }, [shortCode, token]);
@@ -101,95 +91,90 @@ export default function AdminPage() {
     }
   };
   
-  if (loading) {
-    return (
-      <Layout>
-        <div className="flex justify-center">
-            <div className="w-full max-w-lg">
-                <Loading message="Buscando dados do link..." />
-            </div>
-        </div>
-      </Layout>
-    );
-  }
+  const renderContent = () => {
+    if (loading) {
+      return <Loading message="Buscando dados do link..." />;
+    }
   
-  if (error && !stats) {
-    return (
-      <Layout>
+    if (error && !stats) {
+      return (
         <div className="w-full max-w-lg mx-auto bg-red-900/50 border border-red-700 text-red-300 p-8 rounded-lg text-center shadow-lg">
           <h2 className="text-3xl font-bold">Acesso Negado</h2>
           <p className="text-xl mt-2">{error}</p>
         </div>
-      </Layout>
-    );
-  }
+      );
+    }
 
-  if (stats) {
-    return (
-      <Layout>
+    if (stats) {
+      return (
         <div className="w-full max-w-2xl mx-auto">
-          {successMessage && <div className="mb-4 bg-green-500/20 text-green-300 p-3 rounded-md text-center">{successMessage}</div>}
-          {error && <div className="mb-4 bg-red-500/20 text-red-300 p-3 rounded-md text-center">{error}</div>}
+          {successMessage && <div className="mb-4 bg-green-500/20 text-green-300 p-3 rounded-md text-center flex items-center justify-center"><FiCheckCircle className="mr-2"/>{successMessage}</div>}
+          {error && <div className="mb-4 bg-red-500/20 text-red-300 p-3 rounded-md text-center flex items-center justify-center"><FiAlertTriangle className="mr-2"/>{error}</div>}
           
           {!isEditing ? (
-            <div className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-              <div className="space-y-4">
+            <div className="bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
+              <div className="space-y-5">
                 <div>
-                  <h2 className="text-sm font-bold text-gray-400">LINK CURTO</h2>
-                  <Link to={new URL(stats.shortUrl).pathname} target="_blank" rel="noopener noreferrer" className="text-cyan-400 break-all text-lg hover:underline">
+                  <h2 className="text-sm font-bold text-gray-400 flex items-center"><FiShare2 className="mr-2"/>LINK CURTO</h2>
+                  <Link to={new URL(stats.shortUrl).pathname} target="_blank" rel="noopener noreferrer" className="text-cyan-400 break-all text-xl hover:underline">
                     {stats.shortUrl}
                   </Link>
                 </div>
                 <div>
-                  <h2 className="text-sm font-bold text-gray-400">DESTINO ATUAL</h2>
+                  <h2 className="text-sm font-bold text-gray-400 flex items-center"><FiLink className="mr-2"/>DESTINO ATUAL</h2>
                   <p className="text-gray-300 break-all text-lg">{stats.originalUrl}</p>
                 </div>
-                <div className="flex justify-between items-center bg-gray-700 p-4 rounded-md">
-                  <h2 className="text-lg font-bold text-gray-300">CLIQUES TOTAIS</h2>
-                  <p className="text-4xl font-bold text-purple-400">{stats.clicks}</p>
+                <div className="flex justify-between items-center bg-gray-900/50 p-4 rounded-lg border border-gray-700">
+                  <h2 className="text-lg font-bold text-gray-300 flex items-center"><FiBarChart2 className="mr-3"/>CLIQUES TOTAIS</h2>
+                  <p className="text-4xl font-black text-purple-400">{stats.clicks}</p>
                 </div>
                 <div>
-                  <h2 className="text-sm font-bold text-gray-400">STATUS DA SENHA</h2>
+                  <h2 className="text-sm font-bold text-gray-400 flex items-center"><FiLock className="mr-2"/>STATUS DA SENHA</h2>
                   <p className="text-gray-300 text-lg">{stats.passwordProtected ? 'Protegido por Senha' : 'Público'}</p>
                 </div>
               </div>
-              <div className="mt-8 flex flex-col md:flex-row gap-4">
-                <button onClick={() => setIsEditing(true)} className="w-full bg-blue-600 hover:bg-blue-700 font-bold p-3 rounded-lg transition-colors">Editar Link</button>
-                <button onClick={handleDelete} disabled={isProcessing} className="w-full bg-red-600 hover:bg-red-700 font-bold p-3 rounded-lg transition-colors disabled:bg-red-900 disabled:cursor-not-allowed">
-                  {isProcessing ? 'Deletando...' : 'Deletar Link'}
+              <div className="mt-8 pt-6 border-t border-gray-700 flex flex-col md:flex-row gap-4">
+                <button onClick={() => setIsEditing(true)} className="w-full bg-blue-600 hover:bg-blue-700 font-bold p-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                  <FiEdit /> Editar Link
+                </button>
+                <button onClick={handleDelete} disabled={isProcessing} className="w-full bg-red-600 hover:bg-red-700 font-bold p-3 rounded-lg transition-colors disabled:bg-red-900 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                  <FiTrash2 /> {isProcessing ? 'Deletando...' : 'Deletar Link'}
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleUpdate} className="bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-700">
-              <h2 className="text-2xl font-bold mb-6 text-center">Editando Link</h2>
+            <form onSubmit={handleUpdate} className="bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
+              <h2 className="text-2xl font-bold mb-6 text-center text-white">Editando Link</h2>
               <div className="space-y-4">
-                <div>
-                  <h2 className="text-sm font-bold text-gray-400">Link Curto (Não Editável)</h2>
+                <div className="relative">
+                  <label className="block mb-2 text-sm font-bold text-gray-400">Link Curto (Não Editável)</label>
+                  <FiShare2 className="absolute top-11 left-4 text-gray-500" />
                   <input
                     type="text"
-                    className="w-full p-3 bg-gray-900 text-gray-500 rounded border border-gray-700 cursor-not-allowed"
+                    className="w-full p-3 pl-10 bg-gray-900 text-gray-500 rounded-md border border-gray-700 cursor-not-allowed"
                     value={stats.shortUrl}
                     readOnly
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label htmlFor="newOriginalUrl" className="block mb-2 text-sm font-bold text-gray-400">Novo Destino Original</label>
+                  <FiLink className="absolute top-11 left-4 text-gray-400" />
                   <input
                     id="newOriginalUrl"
                     type="url"
-                    className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full p-3 pl-10 text-gray-300 bg-gray-900 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     value={newOriginalUrl}
                     onChange={(e) => setNewOriginalUrl(e.target.value)}
                     required
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label htmlFor="newPassword" className="block mb-2 text-sm font-bold text-gray-400">Nova Senha</label>
+                  <FiLock className="absolute top-11 left-4 text-gray-400" />
                   <input
                     id="newPassword"
                     type="text"
-                    className="w-full p-3 text-gray-300 bg-gray-900 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full p-3 pl-10 text-gray-300 bg-gray-900 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="Deixe em branco para remover a senha"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -197,16 +182,24 @@ export default function AdminPage() {
                 </div>
               </div>
               <div className="mt-8 flex gap-4">
-                <button type="button" onClick={() => setIsEditing(false)} className="w-full bg-gray-600 hover:bg-gray-700 font-bold p-3 rounded-lg">Cancelar</button>
-                <button type="submit" disabled={isProcessing} className="w-full bg-purple-600 hover:bg-purple-700 font-bold p-3 rounded-lg disabled:bg-purple-900">
-                  {isProcessing ? 'Salvando...' : 'Salvar Alterações'}
+                <button type="button" onClick={() => setIsEditing(false)} className="w-full bg-gray-600 hover:bg-gray-700 font-bold p-3 rounded-lg flex items-center justify-center gap-2">
+                  <FiX /> Cancelar
+                </button>
+                <button type="submit" disabled={isProcessing} className="w-full bg-purple-600 hover:bg-purple-700 font-bold p-3 rounded-lg disabled:bg-purple-900 flex items-center justify-center gap-2">
+                  <FiCheck /> {isProcessing ? 'Salvando...' : 'Salvar Alterações'}
                 </button>
               </div>
             </form>
           )}
         </div>
-      </Layout>
-    );
-  }
-  return null;
+      );
+    }
+    return null;
+  };
+  
+  return (
+    <Layout>
+      {renderContent()}
+    </Layout>
+  );
 }
