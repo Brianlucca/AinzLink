@@ -27,7 +27,12 @@ export default function FormLink({ setIsLoading, setLoadingMessage, setResultado
       });
       setResultado(response.data);
     } catch (err) {
-      setError(err.response?.data?.error || 'Ocorreu um erro desconhecido.');
+      if (err.response?.status === 429) {
+        setError('Você fez muitas requisições. Por favor, tente novamente mais tarde.');
+      } else {
+        const errorMessage = err.response?.data?.error || err.message || 'Ocorreu um erro desconhecido.';
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
       setLoadingMessage('');

@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import Loading from '../components/Loading';
 import Layout from '../components/Layout';
-import { FiLink, FiLock, FiEdit, FiTrash2, FiBarChart2, FiShare2, FiX, FiCheck, FiCheckCircle } from 'react-icons/fi';
+import { FiLink, FiLock, FiEdit, FiTrash2, FiBarChart2, FiShare2, FiX, FiCheck, FiCheckCircle, FiAlertTriangle } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
@@ -71,7 +71,11 @@ export default function AdminPage() {
       setSuccessMessage('Link atualizado com sucesso!');
       setIsEditing(false);
     } catch (err) {
-      setError(err.response?.data?.error || 'Falha ao atualizar o link.');
+      if (err.response?.status === 429) {
+        setError('Você fez muitas requisições. Por favor, tente novamente mais tarde.');
+      } else {
+        setError(err.response?.data?.error || 'Falha ao atualizar o link.');
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -85,7 +89,11 @@ export default function AdminPage() {
         setSuccessMessage('Link deletado com sucesso! Você será redirecionado.');
         setTimeout(() => navigate('/'), 2000);
       } catch (err) {
-        setError(err.response?.data?.error || 'Falha ao deletar o link.');
+        if (err.response?.status === 429) {
+          setError('Você fez muitas requisições. Por favor, tente novamente mais tarde.');
+        } else {
+          setError(err.response?.data?.error || 'Falha ao deletar o link.');
+        }
         setIsProcessing(false);
       }
     }
